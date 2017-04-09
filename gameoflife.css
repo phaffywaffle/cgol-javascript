@@ -1,0 +1,45 @@
+/* 
+	Thanks for the help!
+	http://stackoverflow.com/questions/4772906/css-is-it-possible-to-add-a-black-outline-around-each-character-in-text
+*/
+* { 
+	cursor: none;
+	margin:0; 
+	padding:0; 
+}
+
+html, body { 
+	width:100%;
+	height:100%;
+}
+
+/*
+canvas {
+	border: 1px solid blue;
+}
+*/
+
+.canavswrapper
+{
+	position:relative;
+	top:0;
+	left:0;
+}
+
+.sliderwrapper 
+{
+	position:relative;
+	top:10px;
+	left:10px;
+}
+
+.sliderwrapper > .group
+{
+	display:inline-block;
+}
+
+p
+{
+	color:white;
+	text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
