@@ -6,6 +6,7 @@ var height;
 var ratio;
 var cell_width;
 var cell_height;
+// Inconsistant. Oops
 var updateTask;
 var repeatTask;
 
@@ -14,22 +15,22 @@ var cols = 600;
 var rows = 600;
 
 // E.g. Inverse framerate
-var timeout = 1
+var timeout = 1;
 
 // To guarantee cells are perfect squares.
 // Uses the cols variable only
 var make_square = false;
 
-// Render the grid ?
+// Render the grid
 var draw_grid = false;
 
 // Set to false to reset the game periodically
-var one_game_only = true;
+var one_game_only = false;
 
 // The rate at which the game will reset in seconds
 // Game lags like crazy whenever it's reset
 // Recommend no less than 45 seconds
-var game_interval = 45;
+var game_interval = 5 * 60;
 
 // For console messages
 // Tested with Firefox on Windows 10 @ 100ms delay
@@ -227,8 +228,31 @@ function reset()
 {	
 	resize();
 	cells = initSeeds([]);
-	if(!updateTask) { clearInterval(updateTask); }
+	gameSpeed(timeout);
+}
+
+// Used to change the speed of the game
+function gameSpeed(newSpeed)
+{	
+	timeout = newSpeed;
+	if(updateTask) { clearInterval(updateTask); }
 	updateTask = setInterval(update, timeout);
+}
+
+// Used to change whether the game will reset
+// Not to be confused with reset() which resets the game immediately
+function repeat(newGameInterval, newSpeed)
+{
+	// I hate this inconsistency
+	game_interval = newGameInterval;
+
+	if(newGameInterval == 0) { one_game_only = true; }
+	else { one_game_only = false; }
+
+	if(newSpeed > 0) { timeout = newSpeed; gameSpeed(timeout); }
+	
+	if(repeatTask) { clearInterval(repeatTask); }
+	if(!one_game_only) { repeatTask = setInterval(reset, game_interval * 1000); }
 }
 
 // Game -------------------------------------------
@@ -240,4 +264,4 @@ function reset()
 
 var cells;
 reset();
-if(!one_game_only) { repeatTask = setInterval(reset, game_interval * 1000); }
+if(!one_game_only) { repeat(game_interval, timeout); }
