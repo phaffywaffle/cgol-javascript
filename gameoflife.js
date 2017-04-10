@@ -6,7 +6,8 @@ var height;
 var ratio;
 var cell_width;
 var cell_height;
-var task;
+var updateTask;
+var repeatTask;
 
 // Touch---------------------------------------
 var cols = 600;
@@ -31,7 +32,7 @@ var one_game_only = true;
 var game_interval = 45;
 
 // For console messages
-// Tested with Firefox on Windows @ 100ms delay
+// Tested with Firefox on Windows 10 @ 100ms delay
 // With <100 rows & columns latency everything >Level 3 will probably run below 20 fps
 // With >200 rows & columns, everything >Level 3 will probably crash your browser tab
 // Level 1:	Global Debug Logging		(Delays startup only)
@@ -226,8 +227,8 @@ function reset()
 {	
 	resize();
 	cells = initSeeds([]);
-	if(!task) { clearInterval(task); }
-	task = setInterval(update, timeout);
+	if(!updateTask) { clearInterval(updateTask); }
+	updateTask = setInterval(update, timeout);
 }
 
 // Game -------------------------------------------
@@ -239,4 +240,4 @@ function reset()
 
 var cells;
 reset();
-if(!one_game_only) { setInterval(reset, game_interval * 1000); }
+if(!one_game_only) { repeatTask = setInterval(reset, game_interval * 1000); }
