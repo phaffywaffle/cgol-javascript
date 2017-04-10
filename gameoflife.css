@@ -3,7 +3,7 @@
 	http://stackoverflow.com/questions/4772906/css-is-it-possible-to-add-a-black-outline-around-each-character-in-text
 */
 * { 
-	cursor: none;
+/*	cursor: none;		*/
 	margin:0; 
 	padding:0; 
 }
@@ -28,14 +28,21 @@ canvas {
 
 .sliderwrapper 
 {
-	position:relative;
+	position:absolute;
 	top:10px;
 	left:10px;
+	background:black;
+	border-style:solid;
+	border-width:4px;
+	border-color:white;
+	padding:5px;
 }
 
+/* Dear god, there must be a better solution than this */
 .sliderwrapper > .group
 {
 	display:inline-block;
+	padding:2px;
 }
 
 p

@@ -1,6 +1,10 @@
+// Something I didn't realize and that took forever to debug is that now that HTML inputs are working,
+// their default values have to match the default values here, otherwise you can have some strange side effects
+
 // Don't touch---------------------------------
 var canvas = document.getElementById('canvas');
 context = canvas.getContext('2d');
+var uses_controls = true;
 var width;
 var height;
 var ratio;
@@ -19,13 +23,13 @@ var timeout = 1;
 
 // To guarantee cells are perfect squares.
 // Uses the cols variable only
-var make_square = false;
+var make_square = true;
 
 // Render the grid
 var draw_grid = false;
 
 // Set to false to reset the game periodically
-var one_game_only = false;
+var one_game_only = true;
 
 // The rate at which the game will reset in seconds
 // Game lags like crazy whenever it's reset
@@ -50,6 +54,10 @@ var dead_color = "black";
 var alive_color = "white";
 var grid_color = "red"
 
+if(uses_controls) { setHTMLDefaultControls(); }
+
+
+
 // Functions --------------------------------------
 
 // To resize dimensions properly if the window changes
@@ -62,7 +70,7 @@ function resize()
 	context.canvas.width = width;
 	if(make_square)
 	{ // This guarantees squareness at the cost of a perfect canvas size
-		rows = cols;
+//		rows = cols;
 		cell_width = width / cols;
 		cell_height = cell_width;		
 		canvas.height = width / ratio;
@@ -254,6 +262,42 @@ function repeat(newGameInterval, newSpeed)
 	if(repeatTask) { clearInterval(repeatTask); }
 	if(!one_game_only) { repeatTask = setInterval(reset, game_interval * 1000); }
 }
+
+// HTML CallBackFunctions --------------
+
+function setHTMLDefaultControls()
+{
+	rows = document.getElementById("rowSlider").value;
+	cols = document.getElementById("columnSlider").value;
+	timeout = document.getElementById("delaySlider").value;
+	var b_r = document.getElementById("bredSlider").value; var b_g = document.getElementById("bgreenSlider").value; var b_b = document.getElementById("bblueSlider").value; dead_color = "rgba(" + b_r + ", " + b_g + ", " + b_b + ", 1)";
+	var c_r = document.getElementById("credSlider").value; var c_g = document.getElementById("cgreenSlider").value; var c_b = document.getElementById("cblueSlider").value; alive_color = "rgba(" + c_r + ", " + c_g + ", " + c_b + ", 1)";
+	var g_r = document.getElementById("gredSlider").value; var g_g = document.getElementById("ggreenSlider").value; var g_b = document.getElementById("gblueSlider").value; grid_color = "rgba(" + g_r + ", " + g_g + ", " + g_b + ", 1)";
+	make_square = document.getElementById("squareCheckbox").checked;
+	draw_grid = document.getElementById("gridCheckbox").checked;
+}
+
+function r_input()
+{
+	if(make_square) { return; }
+	rows = document.getElementById("rowSlider").value;
+	reset();
+}
+
+function c_input() { cols = document.getElementById("columnSlider").value; reset(); }
+
+function timeout_input() { timeout = document.getElementById("delaySlider").value; gameSpeed(timeout); }
+
+function color_input()
+{
+	var b_r = document.getElementById("bredSlider").value; var b_g = document.getElementById("bgreenSlider").value; var b_b = document.getElementById("bblueSlider").value; dead_color = "rgba(" + b_r + ", " + b_g + ", " + b_b + ", 1)";
+	var c_r = document.getElementById("credSlider").value; var c_g = document.getElementById("cgreenSlider").value; var c_b = document.getElementById("cblueSlider").value; alive_color = "rgba(" + c_r + ", " + c_g + ", " + c_b + ", 1)";
+	var g_r = document.getElementById("gredSlider").value; var g_g = document.getElementById("ggreenSlider").value; var g_b = document.getElementById("gblueSlider").value; grid_color = "rgba(" + g_r + ", " + g_g + ", " + g_b + ", 1)";
+}
+
+function square_input() { make_square = document.getElementById("squareCheckbox").checked; resize(); }
+
+function grid_input() { draw_grid = document.getElementById("gridCheckbox").checked; }
 
 // Game -------------------------------------------
 
